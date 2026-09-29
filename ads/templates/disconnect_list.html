@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+    <main class="container-fluid px-0 my-auto">
+        <div class="card shadow border-0 rounded-3 mb-4">
+
+            <!-- ТУЛБАР (Панель инструментов) -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 p-3 mb-4 bg-white border rounded shadow-sm">
+                
+                <!-- Левая часть: Кнопки действий -->
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="/ads/disconnects/create">
+                        <button class="btn btn-success d-inline-flex align-items-center" type="button">
+                            <i class="bi bi-plus-lg me-2"></i> Добавить отключение
+                        </button>
+                    </a>
+                    <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" id="submit-btn-print">
+                        <i class="bi bi-printer me-2"></i> Распечатать
+                    </button>
+                    <button class="btn btn-outline-danger d-inline-flex align-items-center" type="button">
+                        <i class="bi bi-trash me-2"></i> Удалить
+                    </button>
+                    <button class="btn btn-outline-secondary d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#settingsModal" type="button">
+                        <i class="bi bi-filter"></i>Фильтр
+                    </button>
+                    {% if request.GET %}
+                    <a href="/ads/disconnects">
+                        <button class="btn d-inline-flex align-items-center text-danger" type="button">
+                            <i class="bi bi-x-circle"></i>&nbsp;Очистить фильтр
+                        </button>
+                    </a>
+                    {% endif %}
+                </div>
+            
+                <!-- Правая часть: Форма поиска -->
+                <!--div class="col-12 col-md-4 col-lg-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <form style="width: 300px;">
+                            <input type="search" class="form-control border-start-0" placeholder="Поиск заявок..." aria-label="Поиск" name="search" value="{{ request.GET.search }}">
+                        </form>
+                    </div>
+                </div-->
+            
+            </div>
+            <!-- /ТУЛБАР -->
+
+            <!-- Модальное окно (Modal) -->
+            <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="settingsModalLabel">Ввод параметров</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Форма внутри модального окна -->
+                            <form id="parametersForm">
+                                <div class="mb-3">
+                                    <label for="company_exec" class="form-label">Состояние</label>
+                                    <select class="form-select" id="disconnect_state" name="disconnect_state">
+                                        <option value="" selected>Выберите состояние...</option>
+                                        <option value="0">Отключено</option>
+                                        <option value="1">Подключено</option>
+                                    </select>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">  
+                                        <label for="order_date_at" class="form-label">Дата начала отключения с</label>
+                                        <input type="date" class="form-control" id="disconnect_date_at" name="disconnect_date_at" placeholder="">
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="order_date_to" class="form-label">Дата начала отключения по</label>
+                                        <input type="date" class="form-control" id="disconnect_date_to" name="disconnect_date_to" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">  
+                                        <label for="order_date_at" class="form-label">Дата планового подключения с</label>
+                                        <input type="date" class="form-control" id="disconnect_plan_date_at" name="disconnect_plan_date_at" placeholder="">
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="order_date_to" class="form-label">Дата планового подключения по</label>
+                                        <input type="date" class="form-control" id="disconnect_plan_date_to" name="disconnect_plan_date_to" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">  
+                                        <label for="order_date_at" class="form-label">Дата фактического подключения с</label>
+                                        <input type="date" class="form-control" id="disconnect_fact_date_at" name="disconnect_fact_date_at" placeholder="">
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="order_date_to" class="form-label">Дата фактического подключения по</label>
+                                        <input type="date" class="form-control" id="disconnect_fact_date_to" name="disconnect_fact_date_to" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="company_exec" class="form-label">Компания подрядчик</label>
+                                    <select class="form-select" id="company_exec" name="company_exec">
+                                        <option value="" selected>Выберите компанию...</option>
+                                        {% for company in company_exec_list %}
+                                            <option value="{{company.id}}">{{company.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                    <button type="submit" form="parametersForm" class="btn btn-success">Применить</button>
+                                </div>
+                            </form>        
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card-body p-0">
+                
+                <!-- Обычный блок без table-responsive. Шрифт уменьшен через класс small -->
+                <div class="p-2 small">
+                    <!-- table-sm делает строки более компактными по высоте -->
+                    <table class="table table-hover table-striped align-middle m-0 w-100 table-sm" style="table-layout: fixed;">
+                        <thead class="table-light">
+
+                            <tr>
+                                <!-- 1 колонка: Checkbox -->
+                                <th scope="col" style="width: 40px;" class="text-center">
+                                    <input class="form-check-input" type="checkbox" id="select-all">
+                                </th>
+                                <!-- Колонки со 2 по 12 -->
+                                <th scope="col">Ид</th>
+                                <th scope="col">Тип</th>
+                                <th scope="col">Номер</th>
+                                <th scope="col">Период</th>
+                                <th scope="col">Объекты</th>
+                                <th scope="col">Система</th>
+                                <th scope="col">Подключено</th>
+                                <th scope="col">Опубликовать</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="tableBody">
+                            {% for o in disconnects %}
+                            <tr>
+                                <td class="text-center"><input class="form-check-input row-checkbox item-checkbox" type="checkbox" value="{{ o.id }}" name="selected_ids"></td>
+                                <td>
+                                    <!--a href="/ads/orders/{{o.id}}/update"><div>{{o.number}}</div><div class="small text-black-50">{{o.id}}</div></a-->                                    
+                                        <!--button class="btn btn-sm btn-outline-secondary py-0 px-2"><i class="bi bi-pencil"></i></button-->
+                                        <!-- Обертка компонента -->
+                                        <div class="dropdown">
+                                            <!-- Сама кнопка-переключатель -->
+                                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span class="lh-1">{{o.id}}</span>
+                                            </button>
+                                            <!-- Выпадающее меню -->
+                                            <ul class="dropdown-menu">
+                                              <li><a class="dropdown-item" href="/ads/disconnects/{{o.id}}/update"><i class="bi bi-pencil-square"></i>&nbspИзменить</a></li>                                              
+                                            </ul>
+                                          </div>
+                                    </td>
+                                    
+                                
+                                </td>
+                                <td>{{o.disconnection_type}}</td>
+                                <td>{{o.number|default:"--"}}</td>
+                                <td>{{o.get_period}}</td>
+                                <td>{{o.get_buildings_text}}</td>
+                                <td><div>{{o.get_worksystem_text}}</div><div class="small text-black-50">{{o.company_exec|default:"--"}}</div></td>
+                                <td>{% if o.connected %}
+                                    <span style="color: #26b85c; font-size: 1.2rem;">✅</span>
+                                    <span class="small">{{o.fact_connection_date|default:""}}</span>
+                                    {% else %}
+                                    <span style="color: #dd4646; font-size: 1.2rem;">✖</span>
+                                    {% endif %}
+                                </td>
+                                <td>{% if o.published %}
+                                    <span style="color: #26b85c; font-size: 1.2rem;">✅</span>
+                                    {% else %}
+                                    <span style="color: #dd4646; font-size: 1.2rem;">✖</span>
+                                    {% endif %}
+                                </td>
+
+                                
+                                <!--td><div>{{o.get_employees}}</div><div class="small text-black-50">{{o.company_exec|default:"--"}}</div></td-->
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 2. Блок пагинации (Bootstrap-стиль) -->
+        {% if is_paginated %}
+        <div class="pagination">
+          <span class="step-links">
+
+              {% if page_obj.has_previous %}
+                  <a href="?page=1">&laquo; Первая</a>
+                  <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+              {% endif %}
+        
+              <span class="current">
+                  Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+              </span>
+          
+              {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                  <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+              {% endif %}
+
+          </span>
+        </div>
+        {% endif %}
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Весь код внутри выполнится только после загрузки страницы
+        
+            // 1. Выделение всех чекбоксов
+            const selectAllCheckbox = document.getElementById('select-all');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.item-checkbox');
+                    checkboxes.forEach(cb => cb.checked = this.checked);
+                });
+            }
+        
+            // 2. Обработка клика по кнопке
+            const submitBtn = document.getElementById('submit-btn-print');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function() {
+                    const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
+                    const ids = Array.from(checkedBoxes).map(cb => cb.value);
+        
+                    if (ids.length === 0) {
+                        alert('Ничего не выбрано!');
+                        return;
+                    }
+        
+                    fetch('/ads/printdisconnect', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ ids: ids })
+                    })
+                    .then(response => response.blob())
+                    .then(data => {
+                        const pdfBlob = new Blob([data], { type: 'application/pdf' });
+                        // 4. Создаем временную локальную ссылку на этот Blob
+                        const blobUrl = URL.createObjectURL(pdfBlob);
+                        // 5. Открываем ссылку в новой вкладке
+                        window.open(blobUrl, '_blank');
+                    })
+                    .catch(error => {
+                        console.error('Ошибка:', error);
+                        alert('Не удалось связаться с сервером');
+                    });
+                });
+            }
+        });
+        </script>
+        
+
+    {% endblock %}
+
+

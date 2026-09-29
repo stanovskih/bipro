@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<!-- Основной контент страницы -->
+<main class="container my-auto py-3">
+    <div class="row justify-content-center">
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+            
+            <!-- Карточка формы авторизации -->
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-sm-5">
+                    
+                    <!-- Заголовок формы с иконкой защиты -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold h4 m-0">Регистрация в системе</h2>
+                        <p class="text-muted small mt-1">Введите ваши данные для регистрации</p>
+                    </div>
+
+                    <!-- Сама форма -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="form" value="{{ request.GET.return_url }}">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="" name="username" required>
+                            <label for="floatingInput" class="text-muted">
+                                <i class="bi bi-envelope me-1"></i> Логин
+                            </label>
+                            {% for error in form.username.errors %}
+                              <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="" name="first_name" required>
+                            <label for="floatingInput" class="text-muted">
+                                ФИО
+                            </label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="" name="last_name" required>
+                            <label for="floatingInput" class="text-muted">
+                                Компания
+                            </label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="" name="email">
+                            <label for="floatingInput" class="text-muted">
+                                Email
+                            </label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-3" id="floatingInput" placeholder="" name="password1">
+                            <label for="floatingInput" class="text-muted">
+                                Пароль
+                            </label>
+                            {% if form.password1.help_text %}
+                                <small style="color: grey">{{ field.help_text }}</small>
+                            {% endif %}
+                            <div style="font-size: 12px; color: grey; line-height: 12px;margin-top: 5px;">
+                            - Пароль не должен быть слишком похож на другую вашу личную информацию.<br>
+                            - Ваш пароль должен содержать как минимум 8 символов.<br>
+                            - Пароль не должен быть слишком простым и распространенным.<br>
+                            - Пароль не может состоять только из цифр.<br>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-3" id="floatingInput" placeholder="" name="password2">
+                            <label for="floatingInput" class="text-muted">
+                                Подтверждение пароля
+                            </label>
+                        </div>                        
+ 
+                        <div style="font-size: 12px;">
+                          <div>
+                            <label class="checkbox-container">
+                              <input type="checkbox" name="agree" required>
+                              <a href="#">Я согласен с условиями обработки персональных данных ООО «БиПро»</a>
+                            </label>
+                          </div>
+                        </div> 
+
+                        <button class="w-100 btn btn-primary btn-lg rounded-3 d-flex align-items-center justify-content-center gap-2 mb-3" type="submit">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>Регистрация</span>
+                        </button>
+                      </form>
+                    
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+
+
+
+
+
+
+<!--h2 style="margin-bottom: 20px;">Регистрация пользователя</h2>
+  <div class="form_container">
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="form" value="{{ request.GET.return_url }}">
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+ 
+    
+    <br/>
+    <div style="font-size: 12px;">
+      <div>
+        <label class="checkbox-container">
+          <input type="checkbox" name="agree" required>
+          <a href="/static/docs/СОГЛАСИЕ НА ОБРАБОТКУ ПД СЕ.pdf">Я согласен с условиями обработки персональных данных ООО «СУПЕР ЕДА»</a>
+        </label>
+      </div>
+
+
+    </div> 
+    <input type="submit" class="btn" style="line-height: 32px;margin-top: 18px;margin-bottom: 18px;" value="Отправить"/>
+  </form>
+  </div>
+
+  <a href="login" >  
+    <div style="margin: 24px">
+        У меня уже есть аккаунт
+    </div>
+  </a-->    

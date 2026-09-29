@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+    <style>
+        .custom-modal-width {
+          max-width: 1200px;
+        }
+    </style>
+
+
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            
+            {% if form.instance.pk %}
+                <h3 class="mb-2 text-left">Редактировать заявку</h2>
+            {% else %}
+                <h3 class="mb-2 text-left">Создать новую заявку</h2>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="row mb-3">
+                    <div class="col-md-2 mb-3 mb-md-0">  
+                        {{ form.number.label_tag }}
+                        {{ form.number }}
+                    </div>
+                    <div class="col-md-2 mb-3 mb-md-0">
+                        {{ form.order_date.label_tag }}
+                        {{ form.order_date }}
+                    </div>
+                    <div class="col-md-2 mb-3 mb-md-0">
+                        {{ form.ordertype.label_tag }}
+                        {{ form.ordertype }}
+                    </div>                    
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        {{ form.priority.label_tag }}
+                        {{ form.priority }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        {{ form.state.label_tag }}
+                        {{ form.state }}
+                    </div>
+                </div>
+
+
+                <div class="row mb-3">
+                    <div class="col-md-2 mb-3 mb-md-0">  
+                        {{ form.phone.label_tag }}
+                        {{ form.phone }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        {{ form.citizen.label_tag }}
+                        {{ form.citizen }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        {{ form.street.label_tag }}
+                        {{ form.street }}
+                    </div>
+                    <div class="col-md-1 mb-3 mb-md-0">
+                        {{ form.house.label_tag }}
+                        {{ form.house }}
+                    </div>
+                    <div class="col-md-1 mb-3 mb-md-0">
+                        {{ form.flat.label_tag }}
+                        {{ form.flat }}
+                    </div>
+                    <div class="col-md-1 mb-3 mb-md-0">
+                        {{ form.entrance.label_tag }}
+                        {{ form.entrance }}
+                    </div>
+                    <div class="col-md-1 mb-3 mb-md-0">
+                        {{ form.floor.label_tag }}
+                        {{ form.floor }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.worksystem.label_tag }}
+                        {{ form.worksystem }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.company_exec.label_tag }}
+                        {{ form.company_exec }}
+                    </div>
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                    </div>
+
+                    <datalist id="standart-description">
+                        <!-- Передаем данные из контекста Django -->
+                        
+                            <option value="Нет света в подьезде">
+                            <option value="Нет горячей воды">
+                        
+                    </datalist>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-2 mb-3 mb-md-0">  
+                        {{ form.plan_date.label_tag }}
+                        {{ form.plan_date }}
+                    </div>
+                    <div class="col-md-2 mb-3 mb-md-0">  
+                        {{ form.plan_period.label_tag }}
+                        {{ form.plan_period }}
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        {{ form.master.label_tag }}
+                        {{ form.master }}
+                    </div>
+                    <!--сотрудники-->
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        {{ form.employee.label_tag }}
+                        {{ form.employee }}
+                    </div>
+                </div>
+
+
+                <div class="collapse row mb-3" id="extraFields">
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.district.label_tag }}
+                        {{ form.district }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.building.label_tag }}
+                        {{ form.building }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.sourcetype.label_tag }}
+                        {{ form.sourcetype }}
+                    </div>
+                    <div class="col-md-2 mb-3 mb-md-0">
+                        {{ form.summa.label_tag }}
+                        {{ form.summa }}
+                    </div>
+
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.master_text.label_tag }}
+                        {{ form.master_text }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.worker_text.label_tag }}
+                        {{ form.worker_text }}
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">  
+                        {{ form.plan_text.label_tag }}
+                        {{ form.plan_text }}
+                    </div>
+
+
+                </div>
+
+
+                <div class="d-flex justify-content-between mt-4" style="margin-top: 24px;">
+                    <div>
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            &larr; Назад
+                          </a>
+                    </div>
+                    <button id="hist" class="btn btn-outline-secondary d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#settingsModal" type="button">
+                        История
+                    </button>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#extraFields" aria-expanded="false" aria-controls="extraFields">
+                        Показать/скрыть дополнительные
+                    </button>
+                        
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно (Modal) -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog custom-modal-width">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">История с адреса</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="hist-table"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!--script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.13.2/jquery-ui.js"></script-->
+    <script>
+    jQuery(document).ready(function(){
+        new TomSelect(".tom-select-custom", {
+            plugins: ['remove_button'],
+            maxItems: null,
+        });
+        
+        
+        var standart_description = [];
+        
+        $( function() {
+        $( "#id_description" ).autocomplete({
+            source: standart_description
+        });
+        } );
+
+  
+        //поиск по номеру телефона
+        $("#id_phone").focusout(function(){
+            var pathname = window.location.pathname;
+            var phone = $("#id_phone").val();
+            if (pathname.indexOf("create") >= 0 && phone != "") {
+                if (phone.slice(0,1) == "+") {
+                  phone = phone.substring(2);
+                } 
+                if (phone.slice(0,1) == "8" || phone.slice(0,1) == "8") {
+                  phone = phone.substring(1);
+                } 
+                $.ajax({
+                    url: '/ads/getaddressfromphone?phone='+phone,
+                    type: 'get',
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        var obj = jQuery.parseJSON(response);
+                        console.log(obj);
+                        if (obj.result == 1) {
+                          $("#id_citizen").val(obj.citizen);
+                          if ($("#id_street").find("option[value='" + obj.street_id + "']").length === 0) {
+                              // If not, add it
+                            var newOption = new Option(obj.street_name, obj.street_id, true, true);
+                            $("#id_street").append(newOption); // Trigger change for Select2 to recognize
+                          }
+                          $("#id_street").val(obj.street_id).trigger('change');
+                          //$("#id_street").val(obj.street_id).trigger('change');;
+                          //$("#id_street").select2();
+                          $("#id_house").val(obj.house);
+                          $("#id_flat").val(obj.flat);
+                          $("#id_entrance").val(obj.entrance);
+                          $("#id_floor").val(obj.floor);
+                        };
+    
+                        if (obj.debt > 0) {
+                          $('.field-dolg').css("color", "red");
+                          $('.field-dolg').css("display", "block");
+                          t = $('.field-dolg').children();
+                          t = t.children('div');
+                          t.text(obj.debt);
+                          console.log(t);
+                        };
+    
+                        }
+                });
+            }
+        });
+
+        $('#id_worksystem').on('change', function(e) {
+              var street_id = $("#id_street").val();
+              var house = $("#id_house").val();
+              var worksystem_id = $('#id_worksystem').val();
+          
+              $.ajax({
+                    url: '/ads/getcompanyexec?street_id='+street_id+'&house='+house+'&worksystem_id='+worksystem_id,
+                    type: 'get',
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                      var obj = jQuery.parseJSON(response);
+                      console.log(obj)
+                      //standart_description = obj.standart_description;
+                      //$("#id_master").val(obj.master);
+                      $("#id_company_exec").val(obj.company_exec);
+                      standart_description = obj.standart_description;
+                      $( "#id_description" ).autocomplete('option', 'source', standart_description);
+                      
+                      //$.each(obj.worker, function(i,e){
+                      //  $("#id_employee option[value='" + e + "']").prop("selected", true);
+                      //});
+                    }
+            });
+        });
+
+        $("#hist").click(function(){
+          var street_id = $("#id_street").val();
+          var house = $("#id_house").val();
+          var flat = $("#id_flat").val();
+          $.ajax({
+                    url: '/ads/getordershistory?street_id='+street_id+'&house='+house+'&flat='+flat,
+                    type: 'get',
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                      $("#hist-table").html(response);
+                    }
+            });
+        });
+
+
+
+
+    });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<!-- Основной контент страницы -->
+<main class="container my-auto py-3">
+    <div class="row justify-content-center">
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+            
+            <!-- Карточка формы авторизации -->
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-sm-5">
+                    
+                    <!-- Заголовок формы с иконкой защиты -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold h4 m-0">Вход в систему</h2>
+                        <p class="text-muted small mt-1">Введите ваши данные для доступа</p>
+                    </div>
+
+                    <!-- Сама форма -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <!-- Поле Email (с плавающей подсказкой) -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="" name="username" required>
+                            <label for="floatingInput" class="text-muted">
+                                <i class="bi bi-envelope me-1"></i> Логин
+                            </label>
+                        </div>
+
+                        <!-- Поле Пароля (с плавающей подсказкой) -->
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="" name="password" required>
+                            <label for="floatingPassword" class="text-muted">
+                                <i class="bi bi-key me-1"></i> Пароль
+                            </label>
+                        </div>
+
+                        <!-- Блок "Запомнить меня" и "Забыли пароль?" -->
+                        <!--div class="d-flex justify-content-between align-items-center mb-4 small">
+                            <div class="form-check">
+                                <input class="form-check-type form-check-input" type="checkbox" value="" id="rememberMe">
+                                <label class="form-check-label text-muted" for="rememberMe">
+                                    Запомнить меня
+                                </label>
+                            </div>
+                            <a href="#" class="text-decoration-none">Забыли пароль?</a>
+                        </div-->
+                        <div class="mb-3 text-danger">
+                            {{error}}
+                        </div>
+
+                        <!-- Кнопка отправки формы -->
+                        <button class="w-100 btn btn-primary btn-lg rounded-3 d-flex align-items-center justify-content-center gap-2 mb-3" type="submit">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>Войти</span>
+                        </button>
+
+                        <!-- Ссылка на регистрацию для мобильных/альтернативная -->
+                        <div class="text-center mt-3 small">
+                            <span class="text-muted">Ещё нет аккаунта?</span>
+                            <a href="/signup" class="text-decoration-none ms-1 fw-medium">Создать профиль</a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+{% endblock %}

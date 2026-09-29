@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            <h3 class="mb-2 text-left">Фото к заявке №{{object.number}} ({{object.id}})</h2>
+                <div class="mb-8">{{object.address}}</div>
+                <div class="mb-8">{{object.description}}</div>
+    
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 <!-- Ошибки основной формы -->
+                {{ form.errors }}
+
+                {{ formset.management_form }}
+    
+                <!-- 1. ВАЖНО: Ошибки самого формсета (не привязанные к конкретному полю) -->
+                 {% if formset.non_form_errors %}
+                 <div style="color: red;">
+                     {{ formset.non_form_errors }}
+                 </div>
+                {% endif %}
+             
+                <table>
+                 {% for subform in formset %}
+                     <tr>
+                         <td>
+                             <!-- 2. ВАЖНО: Ошибки конкретной строки/формы -->
+                             {% if subform.errors %}
+                                 <div style="color: red;">
+                                     {{ subform.errors }}
+                                 </div>
+                             {% endif %}
+                             
+                             <div class="d-flex p-md-2">
+                                <div class="image-preview-container me-5">
+                                    {% if subform.instance.foto %}
+                                        <!-- Если фото уже сохранено в базе, показываем его -->
+                                        <img src="{{ subform.instance.foto.url }}" 
+                                             class="preview-img" 
+                                             style="width: 280px; height: 180px; display: block; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;">
+                                    {% else %}
+                                        <!-- Заготовка для нового (еще не загруженного) фото -->
+                                        <img src="/static/no_photo.png" 
+                                             class="preview-img" 
+                                             style="width: 280px; height: 180px; display: block; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;">
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {{ subform.as_p }}
+                                </div>
+                             </div>
+                         </td>
+                     </tr>
+                 {% endfor %}
+                </table>
+
+                <div class="d-flex justify-content-between mt-4" style="margin-top: 24px;">
+                    <div>
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            &larr; Назад
+                          </a>
+                        </div>                        
+                </div>
+    
+            </form>
+
+
+
+    </div>
+</div>
+
+
+{% endblock %}

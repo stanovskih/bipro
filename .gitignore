@@ -1,0 +1,100 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ===== Virtual Environments =====
+.venv/
+venv/
+ENV/
+env/
+.env/
+.python-version
+
+# ===== Django =====
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media/
+/staticfiles/
+/static_root/
+/static/
+!/static/.gitkeep
+
+# ===== Migrations (опционально) =====
+# Раскомментируйте, если НЕ хотите хранить миграции в репозитории
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# ===== Environment / Secrets =====
+.env
+.env.*
+!.env.example
+*.env
+secrets.json
+*.pem
+*.key
+
+# ===== Testing / Coverage =====
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ===== IDE / Editors =====
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ===== OS =====
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===== Node (если используете frontend) =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json  # если используете yarn/pnpm
+
+# ===== Docker =====
+# .docker/  # раскомментируйте, если есть локальные docker-данные

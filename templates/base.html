@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БиПро. Управление и Автоматизация ЖКХ</title>
+    <!-- Подключение Bootstrap 5 CSS -->
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    
+    <link href="/static/css/jquery-ui.css" media="all" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.6.2/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.6.2/dist/js/tom-select.complete.min.js"></script>
+
+
+
+    <!--link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css"-->
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <header class="bg-dark text-white py-1 mb-4 shadow-sm">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            
+            <!-- Блок Логотипа и Слогана -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- Временная иконка вместо логотипа (замените на свой <img> при необходимости) -->
+                <div class="text-white rounded-3 d-flex align-items-center justify-content-center">
+                    <!--i class="bi bi-lightning-charge-fill fs-4"></i-->
+                    <img src="/static/logo_black.png" style="width: 40px;">
+                </div>
+                <div>
+                    <h1 class="h4 m-0 fw-bold tracking-wide">БиПро</h1>
+                    <small class="text-white-50 d-block">Управление и Автоматизация ЖКХ</small>
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/ads/orders" class="nav-link px-3 link-light fw-medium">Заявки</a></li>
+                <li><a href="/ads/disconnects" class="nav-link px-3 link-light fw-medium">Отключения</a></li>
+                <li><a href="/ads/orders/reports" class="nav-link px-3 link-light fw-medium">Отчёты</a></li>
+                {% if request.user.is_staff %}
+                <li><a href="/admin" class="nav-link px-3 link-light fw-medium">Администрирование</a></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            <!-- Блок Авторизации (Вход и Регистрация) -->
+            <div class="d-flex align-items-center gap-3">
+                {% if request.user.is_authenticated %}
+                <div class="d-flex">
+                    {% if request.user.employee.company.logo %}
+                    <img src="/media/{{request.user.employee.company.logo}}" style="width: 60px;" class="me-3">
+                    {% else %}
+                    <img src="/static/blue-circle.svg" style="width: 40px;" class="me-3">
+                    {% endif %}
+                    <div>
+                        <div class="lh-1">{{request.user.employee.name}}</div>
+                        <div class="fs-9 opacity-50 lh-1" style="font-size: 13px;">{{request.user.employee.get_post_display}}</div>
+                        <div class="fs-9 opacity-50 lh-1" style="font-size: 13px;"><span>{{request.user.employee.company}}</span><a href="/logout">(выход)</a></div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/signup" class="text-white text-decoration-none opacity-75 opacity-100-hover small">
+                    <i class="bi bi-person-plus me-1"></i>Регистрация
+                </a>
+                <span class="text-white-50">|</span>
+                <a href="/login" class="btn btn-outline-light d-inline-flex align-items-center gap-2 btn-sm px-3">
+                    <i class="bi bi-box-arrow-in-right text-white"></i> 
+                    <span>Войти</span>
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </header>
+
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- Подвал сайта (Footer) -->
+    <footer class="bg-dark text-white py-1 mt-auto">
+        <div class="container">
+            <p class="m-0">&copy; 2026 ООО "БиПро". Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Подключение Bootstrap 5 JS (необязательно, но полезно) -->
+</body>
+</html>

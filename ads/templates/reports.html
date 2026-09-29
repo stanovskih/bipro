@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+    <style>
+        .custom-modal-width {
+          max-width: 1200px;
+        }
+    </style>
+
+
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            
+            <h3 class="mb-2 text-left">Журнал заявок</h2>
+            
+            <form id="parametersForm" method="POST">
+                {% csrf_token %}
+
+                <div class="row mb-3">
+                    <div class="col-md-2 mb-3 mb-md-0">  
+                        <label for="company_exec" class="form-label">Состояние заявок</label>
+                        <select class="form-select" id="order_state" name="order_state">
+                            <option value="" selected>Выберите состояние...</option>
+                            {% for order_state in order_state_list %}
+                                <option value="{{order_state.id}}">{{order_state.name}}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+
+                    <div class="col-md-2 mb-3 mb-md-0">  
+                        <label for="order_date_at" class="form-label">Дата заявки с</label>
+                        <input type="date" class="form-control" id="order_date_at" name="order_date_at" placeholder="">
+                    </div>
+                    <div class="col-md-2 mb-3 mb-md-0">
+                        <label for="order_date_to" class="form-label">Дата заявки до</label>
+                        <input type="date" class="form-control" id="order_date_to" name="order_date_to" placeholder="">
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">  
+                        <label for="order_date_at" class="form-label">Дата план с</label>
+                        <input type="date" class="form-control" id="plan_date_at" name="plan_date_at" placeholder="">
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <label for="order_date_to" class="form-label">Дата план до</label>
+                        <input type="date" class="form-control" id="plan_date_to" name="plan_date_to" placeholder="">
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <label for="company_exec" class="form-label">Компания подрядчик</label>
+                        <select class="form-select" id="company_exec" name="company_exec">
+                            <option value="" selected>Выберите компанию...</option>
+                            {% for company in company_exec_list %}
+                                <option value="{{company.id}}">{{company.name}}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4" style="margin-top: 24px;">
+                    <div>
+                        <button type="submit" class="btn btn-success">Сформировать</button>
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            &larr; Назад
+                          </a>
+                    </div>
+                        
+                </div>
+
+            </form>        
+
+
+        </div>
+    </div>
+
+
+{% endblock %}
